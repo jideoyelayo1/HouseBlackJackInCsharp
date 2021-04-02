@@ -1,0 +1,140 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+
+namespace HouseBlackJack
+{
+    internal class Program
+    {
+        public static class Myvariables{
+            public static List<string> card = new List<string>();
+            public static string TopCard;
+            public static List<string> PickUpCards = new List<string>();
+            public static List<string> PowerCards = new List<string>();
+        }
+        
+        public static void Main(string[] args)
+        {
+            // Making Special Cards
+            string[] powers = {"S2", "C2", "H2", "D2", "CJ", "SJ"};
+            string[] powCards = {"A","2","8","J","Q","K" };
+            Myvariables.PowerCards.AddRange(powCards);
+            Myvariables.PickUpCards.AddRange(powers);
+
+            // Testing functions
+            Myvariables.TopCard = "H10";
+            Myvariables.card = AddCards(Myvariables.card);
+            Console.WriteLine(Myvariables.card.Count);
+            List<string> player1 = new List<string>();
+            player1 = HandOutCards(6, player1);
+            foreach (string x in player1)
+            Console.WriteLine(x);
+            
+            player1 = playingGame(player1);
+            Console.WriteLine("after function");
+            
+            foreach (string x in player1)
+                Console.WriteLine(x);
+        }
+        public static  List<string> AddCards(List<string> cards)
+        {
+            string[] cardSuits = {"S", "C", "H", "D"};
+            string[] cardNums = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+            List<string> cardRefill = new List<string>();
+            foreach (string i in cardSuits)
+                foreach (string j in cardNums)
+                    cardRefill.Add(i + j);
+            cards.AddRange(cardRefill);
+            return cards;
+        }
+
+        public static List<string> HandOutCards(int cardsNeeded, List<string> userCards)
+        {
+            int ran;
+            Random rnd = new Random();
+            for (int i = 0; i < cardsNeeded; i++)
+            {
+                ran = rnd.Next(0, Myvariables.card.Count - 1);
+                userCards.Add(Myvariables.card[ran]);
+                Myvariables.card.Remove(Myvariables.card[ran]);
+            }
+
+            return userCards;
+        }
+
+        public static List<string> playingGame( List<string> userCards)
+        {
+            Console.WriteLine("The card on top of the Deck is " + Myvariables.TopCard);
+            Console.Write("Your Cards Are: ");
+            foreach (string yourCards in userCards)
+            Console.Write(yourCards + " ");
+            Console.WriteLine("Want Card do you want to place?");
+            Console.WriteLine("If you want to pick up say Draw");
+            string userInput = "000";
+            bool turnIsOver = false, cardPlaced = false;
+            while ((userInput != "Draw"|| turnIsOver)  )
+            {
+                userInput = Convert.ToString(Console.ReadLine());
+
+                if ()
+                {
+                    
+                }else if (Myvariables.PickUpCards.Contains(Myvariables.TopCard))
+                {
+                    
+                    if (userInput.Contains("2"))
+                    {
+                        
+                    }else if (userInput.Contains("J"))
+                    {
+                        
+                    }
+                    
+                }
+                else if (cardPlaced && userInput != "End")
+                { // here goes the black rules for when you have
+
+                }
+                else if ((userInput[0] == Myvariables.TopCard[0]) || (userInput.Substring(1, userInput.Length - 1) == Myvariables.TopCard.Substring(1, Myvariables.TopCard.Length - 1)))
+                {
+                    cardPlaced = true;
+                    Myvariables.TopCard = userInput;
+                    userCards.Remove(userInput);
+                    Console.WriteLine("Do you want to end turn");
+                    Console.WriteLine("Top Card is:" + Myvariables.TopCard);
+                }
+                else if (userInput == "End" && cardPlaced)
+                {
+                    turnIsOver = true;
+                    Console.WriteLine("Your Turn is Over!");
+                    foreach (string YourCards in userCards)
+                        Console.Write(YourCards + " ");
+                }
+                else if (userInput == "Draw")
+                {
+                    Console.WriteLine("You picked up a card");
+                    userCards = HandOutCards(1,userCards);
+                    turnIsOver = true;
+                }else
+                {
+                    if(userCards.Contains(userInput))
+                        Console.WriteLine("You can not choose this card");
+                    else
+                        Console.WriteLine("Invalid Choice");
+                    userInput = "000";
+                }
+            }
+            return userCards;
+        }
+
+        public static void RefillCards()
+        {
+            string[] cardSuits = {"S", "C", "H", "D"};
+            string[] cardNums = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+            foreach (string i in cardSuits)
+            foreach (string j in cardNums)
+                Myvariables.card.Add(i + j);
+        }
+    }
+}
